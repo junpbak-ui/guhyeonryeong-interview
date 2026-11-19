@@ -9,9 +9,8 @@
 <style>
 /* 카드뉴스 규격을 따름: 흰 바탕, 상단 적색 띠, 검정 굵은 제목, 번호 붙은 소제목, ※ 주석, 회색 머리줄 표 */
 :root{
-  --red:#941E23; --red-soft:#F4E8E8; --ink:#111111; --sub:#555555; --gray:#909090;
+  --red:#941E23; --red-soft:#F4E8E8; --ink:#111111; --sub:#555555; --gray:#6E6E6E;
   --line:#D9D9D9; --head:#EFEFEF; --bg:#FFFFFF;
-  --wei:#B3262D; --shu:#2F55A4; --wu:#C89211;
   color-scheme:light;
 }
 *{box-sizing:border-box}
@@ -45,11 +44,11 @@ h1,h2,h3,p{margin:0}
 .btn:hover{background:#7C181C;border-color:#7C181C}
 .btn.line{background:#fff;color:var(--ink);border-color:var(--line)}
 .btn.line:hover{border-color:var(--ink);background:#fff}
+.btn:active:not(:disabled),.pick:active{transform:translateY(1px)}
 .btn:disabled{opacity:.4;cursor:not-allowed}
+::placeholder{color:#767676;opacity:1}
 .btn:focus-visible,.pick:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
 .actions{display:flex;flex-wrap:wrap;gap:10px}
-.dot{display:inline-block;width:8px;height:8px;margin-right:6px;vertical-align:1px}
-.dot.wei{background:var(--wei)} .dot.shu{background:var(--shu)} .dot.wu{background:var(--wu)}
 
 /* 얼굴 원: 그림을 확대해 얼굴만 보이게 자름 */
 .face{flex:0 0 auto;display:block;border-radius:50%;background-color:#fff;background-repeat:no-repeat;border:1px solid var(--line)}
@@ -117,7 +116,7 @@ table.sum td.v{color:var(--red);font-weight:700}
 .review .tx{font-size:17px}
 .share{display:grid;grid-template-columns:280px minmax(0,1fr);gap:40px;align-items:center}
 .share-text{background:var(--head);border-radius:4px;padding:14px 16px;font-size:15px;overflow-wrap:break-word;margin:12px 0 16px}
-.badge{width:280px;max-width:100%;border:1.5px solid var(--ink);border-radius:6px;overflow:hidden;background:#fff}
+.badge{width:280px;max-width:100%;border:1.5px solid var(--ink);border-radius:4px;overflow:hidden;background:#fff}
 .badge .band{background:var(--red);color:#fff;padding:14px 16px;display:flex;justify-content:space-between;font-size:14px;font-weight:700}
 .badge .body{padding:22px 20px 20px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:2px}
 .badge .photo{width:110px;height:110px;border:1px solid var(--line);background-color:#fff;background-repeat:no-repeat;margin-bottom:12px}
@@ -170,7 +169,7 @@ footer .logo{font-size:20px}
     <section class="hero">
       <p class="kicker">삼국지 오피스 · 가상 채용 플랫폼 잡천하</p>
       <h1 class="title">구현령 면접<br>당신은 어떤 인재입니까</h1>
-      <p class="lede">조조, 유비, 손권 중 한 명이 면접관이 되어 질문 세 개를 던집니다. 답을 마치면 닮은 삼국지 인재 유형과 그 인물의 실제 기록, 사원증을 보여 드립니다.</p>
+      <p class="lede">조조, 유비, 손권 중 한 명과 질문 세 개로 면접을 봅니다. 끝나면 닮은 삼국지 인재와 그 인물의 실제 기록을 보여 드립니다.</p>
     </section>
 
     <section class="sec">
@@ -227,7 +226,7 @@ footer .logo{font-size:20px}
 
 <script>
 const INTERVIEWERS = {
-  cao: { name:'조조', company:'위그룹', rank:'회장', fac:'wei', code:'WEI', room:'구현령 면접', tone:'hage',
+  cao: { name:'조조', company:'위그룹', rank:'회장', code:'WEI', room:'구현령 면접', tone:'hage',
     pitch:'출신은 묻지 않네. 재주만 보여 주게.',
     questions:[
       '출신이나 학벌은 묻지 않겠네. 자네가 가진 재주 하나만 말해 보게.',
@@ -238,7 +237,7 @@ const INTERVIEWERS = {
     opening:'앉게. 위그룹 회장 조조일세. 시간이 없으니 바로 묻겠네.',
     closing:'수고했네. 결과를 보여 주지.'
   },
-  liu: { name:'유비', company:'촉컴퍼니', rank:'대표', fac:'shu', code:'SHU', room:'삼고초려 면접', tone:'jondae',
+  liu: { name:'유비', company:'촉컴퍼니', rank:'대표', code:'SHU', room:'삼고초려 면접', tone:'jondae',
     pitch:'좋은 분이라면 세 번이라도 찾아갑니다.',
     questions:[
       '저희는 몇 번이나 넘어졌던 회사입니다. 그래도 함께하고 싶은 이유가 있으신가요?',
@@ -249,7 +248,7 @@ const INTERVIEWERS = {
     opening:'와 주셔서 고맙습니다. 촉컴퍼니 대표 유비입니다. 편하게 이야기 나눠요.',
     closing:'수고하셨습니다. 결과를 보여 드릴게요.'
   },
-  sun: { name:'손권', company:'오상사', rank:'사장', fac:'wu', code:'WU', room:'젊은 인재 면접', tone:'hage',
+  sun: { name:'손권', company:'오상사', rank:'사장', code:'WU', room:'젊은 인재 면접', tone:'hage',
     pitch:'나이보다 실력, 경력보다 성장이네.',
     questions:[
       '선배들이 자네를 경험 없다고 무시한다면, 어떻게 증명하겠나?',
@@ -315,7 +314,6 @@ function faceCrop(node, key, zoom){
   return node;
 }
 function face(key, zoom){ const a = el('span','face'); a.setAttribute('aria-hidden','true'); return faceCrop(a, key, zoom || 3.6); }
-function coName(v){ const s = el('span'); const d = el('span','dot ' + v.fac); d.setAttribute('aria-hidden','true'); s.append(d, document.createTextNode(v.company)); return s; }
 function show(id){ for (const s of ['start','room','result']) $(s).hidden = s !== id; window.scrollTo(0,0); }
 
 // ---------- 시작 ----------
@@ -325,7 +323,7 @@ function renderPicks(){
     const b = el('button','pick'); b.type = 'button';
     b.setAttribute('aria-pressed', String(state.who === id));
     const t = el('span','txt');
-    const co = el('span','co'); co.append(coName(v), document.createTextNode(' · ' + v.room));
+    const co = el('span','co', v.company + ' ' + v.room);
     t.append(el('b', null, v.name + ' ' + v.rank), co, el('span','q','“' + v.pitch + '”'));
     b.append(portrait(id, v.name + ' ' + v.rank + ' 일러스트'), t);
     b.onclick = () => { state.who = id; renderPicks(); };
@@ -348,7 +346,7 @@ function renderHead(){
   const done = state.step >= 3;
   const steps = el('div','steps'); steps.setAttribute('aria-hidden','true');
   for (let i = 0; i < 3; i++) steps.append(el('span', i < state.step ? 'done' : ''));
-  const meta = el('div','meta'); meta.append(coName(v), document.createTextNode(' · ' + v.room + ' · ' + state.job));
+  const meta = el('div','meta'); meta.append(el('div', null, v.company + ' ' + v.room), el('div', null, '지원 직무: ' + state.job));
   const prog = el('div'); prog.append(el('div','count', done ? '면접 종료' : '질문 ' + (state.step + 1) + ' / 3'), steps);
   h.append(portrait(state.who, '면접관 ' + v.name + ' 일러스트'), el('div','who', '면접관 ' + v.name + ' ' + v.rank), meta, prog);
 }
